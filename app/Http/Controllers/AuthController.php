@@ -14,6 +14,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller implements ShouldQueue, ShouldBeUnique
@@ -56,15 +57,17 @@ class AuthController extends Controller implements ShouldQueue, ShouldBeUnique
         
     }
 
-    public function register(Request $req){
+    public function register(Request $req):JsonResponse
+    {
         $validator = $req->validate([
-            'name' => 'bail|required|string',
-            'email' => 'bail|required|email|unique:customers,email|max:100',
-            'password' => 'bail|required',
-            'c_password' => 'bail|required|same:password',
-            'contact' => 'bail|nullable|numeric|min:10|max:15|unique:customers,contact'
+            'name' => 'required|string',
+            'email' => 'required|email|unique:customers,email|max:100',
+            'password' => 'required',
+            'c_password' => 'required|same:password',
+            'contact' => 'nullable|numeric|min:10|max:15|unique:customers,contact'
         ]);
         // dd($validator);
+        // $validator = $validator->safe()->only(['name', 'email', 'password', 'c_password', 'contact']);
 
         if($validator){
             $validator['password'] = Hash::make($validator['password']);
@@ -96,7 +99,8 @@ class AuthController extends Controller implements ShouldQueue, ShouldBeUnique
         return $this->success("","Logged Out Successfully");
     }
 
-    public function details(Request $req){
+    public function details(Request $req):JsonResponse
+    {
         $user = Auth::guard('customer')->user();
         return $this->success([
             'user' => $user

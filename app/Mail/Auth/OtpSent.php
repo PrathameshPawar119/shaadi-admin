@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Auth;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -9,19 +9,21 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class UserCreated extends Mailable
+class OtpSent extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $data;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($data)
+    public $type;
+    public $otp;
+    public function __construct($otp, $type)
     {
-        $this->data = $data;
+        $this->otp = $otp;
+        $this->type = $type;
     }
 
     /**
@@ -32,7 +34,7 @@ class UserCreated extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Making you Preffesional - Shramik',
+            subject: 'Email Verification Code',
         );
     }
 
@@ -44,7 +46,7 @@ class UserCreated extends Mailable
     public function content()
     {
         return new Content(
-            markdown: 'emails.welcome',
+            markdown: 'emails.auth.otpsent',
         );
     }
 

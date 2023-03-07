@@ -9,19 +9,19 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class UserCreated extends Mailable
+class CompanyCreated extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $data;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($data)
+    public $company;
+    public function __construct($company)
     {
-        $this->data = $data;
+        $this->company = $company;
     }
 
     /**
@@ -32,7 +32,7 @@ class UserCreated extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Making you Preffesional - Shramik',
+            subject: 'Company Created Successfully',
         );
     }
 
@@ -44,7 +44,7 @@ class UserCreated extends Mailable
     public function content()
     {
         return new Content(
-            markdown: 'emails.welcome',
+            markdown: 'emails.companycreated',
         );
     }
 

@@ -18,9 +18,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('title');
             $table->text('about')->nullable();
-            $table->string('email');
+            $table->string('email')->unique();
             $table->json('services')->nullable();
-            $table->string('website')->nullable();
+            $table->string('website')->nullable()->unique();
             $table->string('industry_type');
             $table->string('main_city')->nullable();
             $table->string('company_size')->nullable();

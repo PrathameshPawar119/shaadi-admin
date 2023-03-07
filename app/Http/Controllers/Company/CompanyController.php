@@ -9,10 +9,17 @@ use App\Models\Customer\Customer;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Laravel\Sanctum\HasApiTokens;
 
 class CompanyController extends Controller
 {
-    use HttpResponses;
+    use HttpResponses, HasApiTokens;
+
+    public function index(Company $company){
+        $company = Company::find($company->id);
+        return $this->success($company, "Company fetched successfully !");
+    }
+
 
     public function createCompany(Customer $customer, Request $req){
         $validator = $req->validate([
@@ -29,7 +36,19 @@ class CompanyController extends Controller
         ]);
 
         if($validator){
-            $company = Company::create($validator);
+            $company = Company::create([
+                'creator' => $customer->id,
+                'name' => $validator['name'],
+                'title' => $validator['title'],
+                'about' => $validator['about'],
+                'email' => $validator['email'],
+                'services'=> $validator['services'],
+                'website'=> $validator['website'],
+                'industry_type'=> $validator['industry_type'],
+                'main_city'=> $validator['main_city'],
+                'company_size'=> $validator['company_size'],
+                'founded'=> $validator['founded'],
+            ]);
 
             Mail::to($company->email)->send(new CompanyCreated($company));
             return $this->success($company, "Company Registered Successfully !");
@@ -39,5 +58,4 @@ class CompanyController extends Controller
         }
     }
 
-    
 }

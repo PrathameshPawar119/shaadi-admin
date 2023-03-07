@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\Auth\OtpController;
-use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Company\CompanyController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
@@ -37,14 +37,17 @@ Route::post("/verifyotp", [OtpController::class, "verifyOtp"]);
 
 
 //company
+// Protected action routes
 Route::group(["prefix" => "company", "middleware" => 'auth:customer'], function (){
     Route::post("createcompany/{customer:id}", [CompanyController::class, "createCompany"]);
     // edit company
     // create company/about
     // edit company/about
 });
+
+//public routes 
 Route::group(["prefix" => "company"], function(){
-    
+    Route::get('/{company:id}', [CompanyController::class,  "index"]);
 });
 
 

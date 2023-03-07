@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\auth;
+
 
 use App\Mail\UserCreated;
 use App\Models\Customer\Customer;
@@ -14,10 +15,10 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Arr;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Validator;
 
-class AuthController extends Controller implements ShouldQueue, ShouldBeUnique
+class AuthController extends Controller
 {
     use HttpResponses;
     use HasApiTokens, HasFactory, Notifiable;

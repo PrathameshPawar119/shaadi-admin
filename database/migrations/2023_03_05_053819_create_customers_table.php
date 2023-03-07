@@ -13,14 +13,18 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->string('contact')->nullable();
+            $table->string('contact')->nullable()->unique();
+            $table->boolean('has_whatsapp')->default(false);
+            $table->string('alt_contact')->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
+            $table->timestamp('contact_verified_at')->nullable();
+            $table->string('password')->nullable();
             $table->rememberToken();
+            $table->string('referrer')->nullable();
             $table->timestamps();
         });
     }
@@ -32,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('customers');
     }
 };

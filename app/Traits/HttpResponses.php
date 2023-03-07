@@ -6,7 +6,7 @@ trait HttpResponses{
 
     protected function success($data, $message = null, $code = 200){
         return response()->json([
-            'status' => "request was successfull",
+            'status' => true,
             'message' => $message,
             'data' => $data
         ], $code);
@@ -14,7 +14,7 @@ trait HttpResponses{
 
     protected function error($data, $message = null, $code){
         return response()->json([
-            'status' => "error has occured",
+            'status' => false,
             'message' => $message,
             'data' => $data
         ], $code);

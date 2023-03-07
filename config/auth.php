@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\Customer\Customer;
+use App\Models\User;
+
 return [
 
     /*
@@ -40,6 +43,10 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+        'customer' => [
+            'driver' => 'session',
+            'provider' => 'customers'
+        ]
     ],
 
     /*
@@ -62,8 +69,12 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => App\Models\User::class,
+            'model' => User::class,
         ],
+        'customers' => [
+            'driver' => 'eloquent',
+            'model' => Customer::class
+        ]
 
         // 'users' => [
         //     'driver' => 'database',
@@ -93,6 +104,12 @@ return [
             'expire' => 60,
             'throttle' => 60,
         ],
+        'customers' => [
+            'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ]
     ],
 
     /*

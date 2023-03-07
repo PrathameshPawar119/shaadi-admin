@@ -64,7 +64,8 @@ class AuthController extends Controller implements ShouldQueue, ShouldBeUnique
 
     public function logout(Request $req){
 
-        Auth::user()->currentAccessToken()->delete();
+        $req->session()->invalidate();
+        $req->session()->regenerateToken();
         
         return $this->success("","Logged Out Successfully");
     }

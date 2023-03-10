@@ -23,8 +23,10 @@ return new class extends Migration
             $table->string('website')->nullable()->unique();
             $table->string('industry_type');
             $table->string('main_city')->nullable();
+            $table->json('available_cities')->nullable();
             $table->string('company_size')->nullable();
             $table->timestamp("founded")->default(now());
+            $table->integer('followers')->default(0);
             $table->integer('reports')->default(0);
             $table->unsignedBigInteger('creator');
             $table->foreign('creator')->references('id')->on('customers')->onDelete('cascade')->onUpdate('cascade');

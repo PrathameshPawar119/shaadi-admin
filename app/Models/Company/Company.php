@@ -4,17 +4,20 @@ namespace App\Models\Company;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class Company extends Model
 {
-    use HasFactory;
+    use HasFactory, HasApiTokens, Notifiable;
 
     protected $fillable = [
-        'name', 'title', 'about', 'email', 'services', 'website', 'industry_type', 'location', 'company_size', 'founded', 'reports'
+        'creator', 'name', 'title', 'about', 'email', 'services', 'website', 'industry_type', 'location', 'company_size', 'main_city', 'available_cities', 'founded', 'reports'
     ];
 
     protected $casts = [
-        'services' => 'array'
+        'services' => 'array',
+        'available_cities' => 'array'
     ];
 
     //Industry types

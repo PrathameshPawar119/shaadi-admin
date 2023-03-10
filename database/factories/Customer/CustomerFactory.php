@@ -28,7 +28,7 @@ class CustomerFactory extends Factory
         }else{
             return [
                 "name" => fake()->name,
-                "email" => fake()->email,
+                "email" => fake()->unique()->safeEmail(),
                 "password" => Hash::make('customer'),
                 "contact" => fake()->numberBetween(5555555555,9999999999),
                 "email_verified_at" => now()->timestamp,

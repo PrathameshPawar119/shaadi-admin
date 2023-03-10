@@ -22,7 +22,7 @@ class CompanyFactory extends Factory
             "name" => fake()->company(),
             "title" => fake()->title(),
             "about" => fake()->paragraph(),
-            "email" => fake()->email(),
+            "email" => fake()->unique()->safeEmail(),
             "industry_type" => fake()->randomElement(Company::IndustryTypes),
             "main_city" => fake()->city(),
             "company_size" => fake()->randomElement(Company::CompanySize),

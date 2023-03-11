@@ -5,6 +5,8 @@ namespace Database\Factories\Customer;
 use App\Models\City;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Customer\Customer>
@@ -28,7 +30,9 @@ class CustomerFactory extends Factory
             ];
         }else{
             return [
-                "name" => fake()->name,
+                "name" => $name = fake()->name,
+                "slug" => Str::slug($name),
+                "title" => fake()->sentence(3),
                 "email" => fake()->unique()->safeEmail(),
                 "password" => Hash::make('customer'),
                 "contact" => fake()->numberBetween(5555555555,9999999999),

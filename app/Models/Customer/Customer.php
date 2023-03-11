@@ -14,7 +14,7 @@ class Customer extends Authenticate
     use HasFactory, HasApiTokens, Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password', 'contact', 'email_verified_at', 'city'
+        'name', 'title', 'email', 'password', 'contact', 'email_verified_at', 'city'
     ];
 
     protected $hidden = [

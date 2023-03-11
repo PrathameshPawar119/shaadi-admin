@@ -18,7 +18,7 @@ class CityFactory extends Factory
     public function definition()
     {
         return [
-            'name' => $name = fake()->word,
+            'name' => $name = fake()->unique()->word,
             'url' => Str::slug($name),
             'state_name' => fake()->word,
             'state_code' => fake()->word,

@@ -61,9 +61,9 @@ Route::group(["middleware" => 'auth:customer'], function (){
 
 //public routes 
 
-Route::group(["prefix" => "city"], function(){
+Route::group([], function(){
     // filter homepage posts by city and types
-    Route::get("/{city:name}", [PostController::class, "postsByCityFilteres"]);
+    Route::get("/{city:name}/city", [PostController::class, "postsByCityFilteres"]);
 });
 
 Route::group(["prefix" => "company"], function(){
@@ -71,8 +71,9 @@ Route::group(["prefix" => "company"], function(){
     Route::get('/allcompanies', [CompanyController::class, "getAllCompanies"]);
 });
 
-Route::group(["prefix" => "post"], function (){
-    Route::get('/', [PostController::class, "getAllPosts"]);
+Route::group(["prefix" => "posts"], function (){
+    Route::get('/new', [PostController::class, "getNewPosts"]);
+    Route::get("/popular", [PostController::class, "getPopularPosts"]);
     Route::get('/{customer:id}',[PostController::class, "getUserPosts"]);
 });
 

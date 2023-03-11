@@ -4,6 +4,7 @@ use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\Company\CompanyController;
 use App\Http\Controllers\Customer\PostController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -22,6 +23,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get("all-cities", [LocationController::class, "getAllCities"]);
 
 
 //   AUTHENTICATION --  //
@@ -58,6 +61,11 @@ Route::group(["middleware" => 'auth:customer'], function (){
 
 //public routes 
 
+Route::group(["prefix" => "city"], function(){
+    // filter homepage posts by city and types
+    Route::get("/{city:name}", [PostController::class, "postsByCityFilteres"]);
+});
+
 Route::group(["prefix" => "company"], function(){
     Route::get('/{company:id}', [CompanyController::class,  "index"]);
     Route::get('/allcompanies', [CompanyController::class, "getAllCompanies"]);
@@ -67,4 +75,5 @@ Route::group(["prefix" => "post"], function (){
     Route::get('/', [PostController::class, "getAllPosts"]);
     Route::get('/{customer:id}',[PostController::class, "getUserPosts"]);
 });
+
 

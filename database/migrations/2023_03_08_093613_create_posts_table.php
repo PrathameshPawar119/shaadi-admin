@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->integer('likes')->default(0)->nullable();
             $table->json('comments')->nullable();
+            $table->string('city');
             $table->unsignedBigInteger('creator');
             $table->foreign('creator')->references('id')->on('customers')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();

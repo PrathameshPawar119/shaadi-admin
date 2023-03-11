@@ -2,6 +2,7 @@
 
 namespace Database\Factories\Customer;
 
+use App\Models\City;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
@@ -31,6 +32,7 @@ class CustomerFactory extends Factory
                 "email" => fake()->unique()->safeEmail(),
                 "password" => Hash::make('customer'),
                 "contact" => fake()->numberBetween(5555555555,9999999999),
+                "city" =>  fake()->randomElement(City::all()->pluck('name', 'id')),
                 "email_verified_at" => now()->timestamp,
                 'created_at' => fake()->dateTimeBetween(now()->subMonth(2),now()),
                 'updated_at' => fake()->dateTimeBetween(now()->subMonth(2),now())

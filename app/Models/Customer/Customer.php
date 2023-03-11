@@ -14,7 +14,7 @@ class Customer extends Authenticate
     use HasFactory, HasApiTokens, Notifiable;
 
     protected $fillable = [
-        'name', 'email', 'password', 'contact', 'email_verified_at'
+        'name', 'email', 'password', 'contact', 'email_verified_at', 'city'
     ];
 
     protected $hidden = [
@@ -27,11 +27,12 @@ class Customer extends Authenticate
 
 
     public function post(){
-        return $this->hasMany(Post::class);
+        return $this->belongsToMany(Post::class);
     }
 
     public function company(){
         return $this->hasMany(Company::class);
     }
+
 
 }

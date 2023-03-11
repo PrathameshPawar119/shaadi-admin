@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
+use App\Models\City;
 use App\Models\Customer\Customer;
 use App\Models\Customer\Post;
 use App\Traits\HttpResponses;
@@ -34,6 +35,35 @@ class PostController extends Controller
 
         return $this->error(null, "Validation Error", 500);
     }
+
+    // shuffled posts by city
+    // Posts by city with filters
+    public function postsByCityFilteres(City $city ,Request $request):JsonResponse
+    {
+        $validator = $request->validate([
+            "type" => 'string|in:latest,popular'
+        ]);
+
+        if ($validator['type'] == "latest") 
+        {
+            $posts = Post::orderBy('created_at', 'DESC')->where('city', $city->name)->paginate(20);
+            return $this->success($posts, "Latest Posts...");
+        }
+        else if($validator['type'] == "popular")
+        {
+            $posts = Post::orderBy('likes', 'DESC')->where('city', $city->name)->paginate(20);
+            return $this->success($posts, "Popular Posts...");
+        }
+
+        $new_posts = Post::orderBy('created_at', 'DESC')->where('city', $city->name)->paginate(20)->toArray();
+        $popular_posts = Post::orderBy('likes', 'DESC')->where('city', $city->name)->paginate(20)->toArray();
+        $posts = $new_posts + $popular_posts;
+        $posts = shuffle($posts);
+        return $this->success($posts, "Popular and latest posts shuffled for ".$city);
+
+        return $this->error(null, "Validation Error", 500);
+    }
+
 
     public function getUserPosts(Customer $customer ,Request $request):JsonResponse
     {

@@ -22,7 +22,8 @@ class PostFactory extends Factory
             "content"=> fake()->paragraph(),
             // "tags" => fake()->randomElements([""]),
             "likes" => fake()->numberBetween(0, 100),
-            "creator" => fake()->randomElement(Customer::all()->pluck('id')),
+            "creator" => $creator = fake()->randomElement(Customer::all()->pluck('id')),
+            "city" => Customer::find($creator)->city,
             'created_at' => fake()->dateTimeBetween(now()->subMonth(2),now()),
             'updated_at' => fake()->dateTimeBetween(now()->subMonth(2),now())
         ];

@@ -11,7 +11,7 @@ class Post extends Model
     use HasFactory, HasApiTokens;
 
     protected $fillable = [
-        'title', 'content', 'tags', 'image', 'creator'
+        'title', 'content', 'tags', 'image', 'creator', 'city'
     ];
 
     protected $casts = [

@@ -107,4 +107,9 @@ class AuthController extends Controller
             'user' => $user
         ]);
     }
+
+    // public function profile(Request $req):JsonResponse
+    // {
+    //     $user = Auth::guard('customer')->user();
+    // }
 }

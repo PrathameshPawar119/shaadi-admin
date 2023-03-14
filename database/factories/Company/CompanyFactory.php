@@ -5,6 +5,7 @@ namespace Database\Factories\Company;
 use App\Models\Company\Company;
 use App\Models\Customer\Customer;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Company\Company>
@@ -19,7 +20,8 @@ class CompanyFactory extends Factory
     public function definition()
     {
         return [
-            "name" => fake()->company(),
+            "name" => $name = fake()->company(),
+            "slug" => Str::slug($name),
             "title" => fake()->title(),
             "about" => fake()->paragraph(),
             "email" => fake()->unique()->safeEmail(),

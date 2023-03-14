@@ -16,24 +16,25 @@ class PostController extends Controller
 {
     use HttpResponses, HasApiTokens;
 
-    public function getAllPosts(Request $request):JsonResponse
+    public function getNewPosts():JsonResponse
     {
-        $validator = $request->validate([
-            "type" => 'string|required|in:latest,popular'
-        ]);
-
-        if ($validator['type'] == "latest") 
-        {
+        try {
             $posts = Post::orderBy('created_at', 'DESC')->paginate(20);
             return $this->success($posts, "Latest Posts...");
+        } catch (\Throwable $th) {
+            return $this->error(null, $th->getMessage(), 500);
         }
-        else if($validator['type'] == "popular")
-        {
-            $posts = Post::orderBy('likes', 'DESC')->paginate(20);
-            return $this->success($posts, "Popular Posts...");
-        }
+    }
 
-        return $this->error(null, "Validation Error", 500);
+    public function getPopularPosts():JsonResponse
+    {
+        try {
+            $posts = Post::join('customers', 'customers.id', 'posts.creator')
+                        ->select('posts.*', 'customers.id', 'customers.name', 'customers.title')->orderBy('likes', 'DESC')->paginate(20);
+            return $this->success($posts, "Popular Posts...");
+        } catch (\Throwable $th) {
+            return $this->error(null,$th->getMessage(), 500);
+        }
     }
 
     // shuffled posts by city
@@ -49,17 +50,17 @@ class PostController extends Controller
             $posts = Post::orderBy('created_at', 'DESC')->where('city', $city->name)->paginate(20);
             return $this->success($posts, "Latest Posts...");
         }
-        else if($validator['type'] == "popular")
+        else
         {
             $posts = Post::orderBy('likes', 'DESC')->where('city', $city->name)->paginate(20);
             return $this->success($posts, "Popular Posts...");
         }
 
-        $new_posts = Post::orderBy('created_at', 'DESC')->where('city', $city->name)->paginate(20)->toArray();
-        $popular_posts = Post::orderBy('likes', 'DESC')->where('city', $city->name)->paginate(20)->toArray();
-        $posts = $new_posts + $popular_posts;
-        $posts = shuffle($posts);
-        return $this->success($posts, "Popular and latest posts shuffled for ".$city);
+        // $new_posts = Post::orderBy('created_at', 'DESC')->where('city', $city->name)->paginate(20)->toArray();
+        // $popular_posts = Post::orderBy('likes', 'DESC')->where('city', $city->name)->paginate(20)->toArray();
+        // $posts = $new_posts + $popular_posts;
+        // $posts = shuffle($posts);
+        // return $this->success($posts, "Popular and latest posts shuffled for ".$city);
 
         return $this->error(null, "Validation Error", 500);
     }

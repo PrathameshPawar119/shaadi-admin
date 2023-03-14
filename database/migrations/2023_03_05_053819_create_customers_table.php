@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('customers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug');
+            $table->string('title')->nullable();
             $table->string('email')->unique();
             $table->string('contact')->nullable()->unique();
             $table->boolean('has_whatsapp')->default(false);

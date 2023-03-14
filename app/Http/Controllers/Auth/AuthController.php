@@ -108,8 +108,13 @@ class AuthController extends Controller
         ]);
     }
 
-    // public function profile(Request $req):JsonResponse
-    // {
-    //     $user = Auth::guard('customer')->user();
-    // }
+    // auth profile of user
+    public function profile(Request $req)
+    {
+        $user = Auth::guard('customer')->user();
+        // services
+        // skills
+        // experiences
+
+    }
 }

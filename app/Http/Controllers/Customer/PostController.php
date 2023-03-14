@@ -24,7 +24,6 @@ class PostController extends Controller
         } catch (\Throwable $th) {
             return $this->error(null, $th->getMessage(), 500);
         }
-
     }
 
     public function getPopularPosts():JsonResponse
@@ -32,7 +31,6 @@ class PostController extends Controller
         try {
             $posts = Post::join('customers', 'customers.id', 'posts.creator')
                         ->select('posts.*', 'customers.id', 'customers.name', 'customers.title')->orderBy('likes', 'DESC')->paginate(20);
-            // $posts = Post::orderBy('likes', 'DESC')->paginate();
             return $this->success($posts, "Popular Posts...");
         } catch (\Throwable $th) {
             return $this->error(null,$th->getMessage(), 500);

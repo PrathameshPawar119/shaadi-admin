@@ -31,6 +31,7 @@ Route::get("all-cities", [LocationController::class, "getAllCities"]);
 Route::group(["middleware" => 'auth:customer'], function(){
     Route::get("logout", [AuthController::class, "logout"]);
     Route::get("details", [AuthController::class, "details"]);
+    Route::post("profile", [AuthController::class], "profile");
 });
 
 Route::group(["prefix" => "auth"], function(){
@@ -51,6 +52,8 @@ Route::group(["middleware" => 'auth:customer'], function (){
         // edit company
         // create company/about
         // edit company/about
+        Route::post("/followcompany", [CompanyController::class, "followCompany"]);
+        Route::post("/unfollowcompany", [CompanyController::class, "unFollowCompany"]);
     });
 
     Route::group(["prefix" => "post"], function () {
@@ -68,10 +71,12 @@ Route::group([], function(){
 
 Route::group(["prefix" => "company"], function(){
     Route::get('/{company:id}', [CompanyController::class,  "index"]);
-    Route::get('/allcompanies', [CompanyController::class, "getAllCompanies"]);
+    Route::post('/allcompanies', [CompanyController::class, "getAllCompanies"]);
+    Route::post('/getfollowers', [CompanyController::class, "getFollowers"]);
 });
 
 Route::group(["prefix" => "posts"], function (){
+    Route::get("/", [PostController::class, "getPopularPosts"]);
     Route::get('/new', [PostController::class, "getNewPosts"]);
     Route::get("/popular", [PostController::class, "getPopularPosts"]);
     Route::get('/{customer:id}',[PostController::class, "getUserPosts"]);

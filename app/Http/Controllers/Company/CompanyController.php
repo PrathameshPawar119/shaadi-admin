@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Mail\CompanyCreated;
 use App\Models\Company\Company as CompanyModel;
 use App\Traits\HttpResponses;
+use Faker\Provider\ar_EG\Company;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -92,6 +93,35 @@ class CompanyController extends Controller
             return $this->error(null, "Validation Error!", 500);
         }
 
+    }
+
+    public function getFollowers(CompanyModel $company)
+    {
+        try {
+            $company = CompanyModel::find($company->id);
+    
+            $followers = $company->customers()->paginate(20);
+            $follower_Count = $company->customers()->count();
+
+            $data = array($follower_Count, $followers);
+
+            return $this->success($data, "Followers fetched");
+        } catch (\Throwable $th) {
+            return $this->error(null, $th->getMessage(), 500);
+        }
+    }
+
+    public function getPosts(CompanyModel $company){
+        try {
+            $company = CompanyModel::find($company->id);
+
+            $posts = $company->posts()->paginate(20);
+            return $this->success($posts, "Posts fetched for company");
+        }
+        catch(\Throwable $th)
+        {
+            return $this->error(null, $th->getMessage(), 500);
+        }
     }
 
 }

@@ -13,4 +13,12 @@ class Services extends Model
     protected $fillable = [
         'name', 'description', 'slug', 'status'
     ];
+
+    public function companies()
+    {
+        return $this->belongsToMany(Company::class, 'companies_services', 'services_id', 'companies_id');
+    }
+
+
+
 }

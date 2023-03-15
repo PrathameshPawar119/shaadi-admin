@@ -2,6 +2,7 @@
 
 namespace App\Models\Customer;
 
+use App\Models\City;
 use App\Models\Company\Company;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,12 +28,15 @@ class Customer extends Authenticate
 
 
     public function post(){
-        return $this->belongsToMany(Post::class);
+        return $this->hasMany(Post::class);
     }
 
     public function company(){
-        return $this->hasMany(Company::class);
+        return $this->belongsToMany(Company::class, 'customers_companies', 'customers_id', 'companies_id');
     }
 
+    public function cities(){
+        return $this->hasOne(City::class, 'customers_cities', 'customers_id', 'cities_id');
+    }
 
 }

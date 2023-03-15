@@ -87,9 +87,16 @@ class PostController extends Controller
         
     }
 
-    public function deletePost()
+    public function deletePost(Post $post)
     {
-
+        try {            
+            $user = Auth::check('customer');
+            if($user){
+                Post::where('id', $post->id)->delete();
+            }
+        } catch (\Throwable $th) {
+            return $this->error(null, $th->getMessage(), 500);
+        }
     }
 
     public function createPost(Request $request){

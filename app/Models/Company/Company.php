@@ -2,6 +2,9 @@
 
 namespace App\Models\Company;
 
+use App\Models\City;
+use App\Models\Customer\Customer;
+use App\Models\Customer\Post;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -55,6 +58,25 @@ class Company extends Model
     ];
 
 
+    public function customers()
+    {
+        return $this->belongsToMany(Customer::class, 'customers_companies', 'companies_id', 'customers_id');
+    }
+
+    public function services()
+    {
+        return $this->belongsToMany(Services::class, 'companies_services', 'companies_id', 'services_id');
+    }
+
+    public function posts()
+    {
+        return $this->hasMany(Post::class, 'companies_posts', 'companies_id', 'posts_id');
+    }
+
+    public function cities()
+    {
+        return $this->belongsToMany(City::class, 'companies_cities', 'companies_id', 'cities_id');
+    }
 
 }
 

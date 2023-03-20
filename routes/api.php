@@ -72,6 +72,7 @@ Route::group([], function(){
 Route::group(["prefix" => "company"], function(){
     Route::get('/{company:id}', [CompanyController::class,  "index"]);
     Route::post('/allcompanies', [CompanyController::class, "getAllCompanies"]);
+
     Route::post('/getfollowers', [CompanyController::class, "getFollowers"]);
 });
 

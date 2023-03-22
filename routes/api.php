@@ -3,8 +3,10 @@
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\Company\CompanyController;
+use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Customer\PostController;
 use App\Http\Controllers\LocationController;
+use App\Http\Controllers\SkillController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -47,6 +49,12 @@ Route::post("/verifyotp", [OtpController::class, "verifyOtp"]);
 // Protected action routes
 
 Route::group(["middleware" => 'auth:customer'], function (){
+
+    Route::group(["prefix" => "customer"], function(){
+        Route::post('/skillaction', [CustomerController::class, "addSkill"]);
+        Route::delete('/skillaction', [CustomerController::class, "removeSkill"]);
+    });
+
     Route::group(["prefix" => "company"], function () {
         Route::post("createcompany", [CompanyController::class, "createCompany"]);
         // edit company
@@ -67,6 +75,12 @@ Route::group(["middleware" => 'auth:customer'], function (){
 Route::group([], function(){
     // filter homepage posts by city and types
     Route::get("/{city:name}/city", [PostController::class, "postsByCityFilteres"]);
+    Route::get("/skills", [SkillController::class, "index"]);
+});
+
+Route::group(["prefix" => "customer"], function(){
+    Route::get('/profile',[AuthController::class, "profile"]);
+    Route::get('/getskills/{customer:id}', [CustomerController::class, "getSkills"]);
 });
 
 Route::group(["prefix" => "company"], function(){

@@ -44,4 +44,9 @@ class Customer extends Authenticate
         return $this->belongsToMany(Skill::class, 'customers_skills', 'customers_id', 'skills_id');
     }
 
+    public function experiences()
+    {
+        return $this->hasMany(Experience::class, 'customers_experiences', 'customers_id', 'experiences_id');
+    }
+
 }

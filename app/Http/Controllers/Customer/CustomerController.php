@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Customer\Customer;
+use App\Models\Skill;
 use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -29,11 +30,12 @@ class CustomerController extends Controller
     {
         $validator = $request->validate([
             'customers_id' => 'required|exists:customers,id',
-            'skills_id' => 'required|exists:skills,id'
+            'skill_name' => 'required|exists:skills,name'
         ]);
 
+        $skill = Skill::where('name', $validator['skill_name'])->first();
         try{
-            $skill = DB::table('customers_skills')->insert(['customers_id' => $validator['customers_id'], 'skills_id' => $validator['skills_id']]);
+            $skill = DB::table('customers_skills')->insert(['customers_id' => $validator['customers_id'], 'skills_id' => $skill->id]);
             return $this->success($skill, "SKill added");
         }
         catch(Throwable $th){

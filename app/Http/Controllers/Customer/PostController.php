@@ -106,9 +106,9 @@ class PostController extends Controller
             'content' => 'string|required|max:1000',
             'tags' => 'nullable|array',
             'image' => 'file|max:5120|mimes:jpeg,jpg,png,gif|nullable',
+            'city' => 'string|nullable'
         ]);
         $validator['creator'] =  $user;
-        
         
         $validator['tags'] = implode(",", $validator['tags']);
         // $validator['comments'] = implode(", ", $validator['comments']);

@@ -3,6 +3,7 @@
 namespace App\Models\Customer;
 
 use App\Models\Company\Company;
+use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
@@ -29,4 +30,10 @@ class Post extends Model
     {
         return $this->belongsTo(Customer::class, 'customers_posts', 'posts_id', 'customers_id');
     }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'tags_posts', 'posts_id', 'tags_id');
+    }
+
 }

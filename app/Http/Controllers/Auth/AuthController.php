@@ -16,6 +16,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
@@ -109,12 +110,25 @@ class AuthController extends Controller
     }
 
     // auth profile of user
-    public function profile(Request $req)
+    public function profile(Request $request)
     {
-        $user = Auth::guard('customer')->user();
-        // services
-        // skills
-        // experiences
+        // user  
+        $user = $request->user('customer') ?? null;
+        if(is_null($user)){
+            return $this->error(null, "User not found", 400);
+        }
+
+        try {
+            // skills
+            $skills = $user->skills()->select('id', 'name')->get();
+            // experiences
+
+            $data = array("skills" => $skills);
+            return $this->success($data, "User profile fetched successfully!");
+            
+        } catch (\Throwable $th) {
+            return $this->error(null, $th->getMessage(), 500);
+        }
 
     }
 }

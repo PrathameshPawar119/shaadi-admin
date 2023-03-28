@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 class CompanyController extends Controller
 {
@@ -29,30 +30,30 @@ class CompanyController extends Controller
                 "type" => 'string|in:latest,popular|nullable',
                 "services" => 'array|nullable'
             ]);
-            dd($validator);
+
+            if ($validator['type'] == "latest") 
+            {
+                $companies = CompanyModel::orderBy('created_at', 'DESC')->paginate(20);
+                return $this->success($companies, "Latest Companies...");
+            }
+            else
+            {
+                $companies = CompanyModel::orderBy('followers', 'DESC')->paginate(20);
+                return $this->success($companies, "Popular Companies...");
+            }
     
             if($validator['services'])
             {
                 dd($validator['services']);
             }
-            else{
-                $companies = CompanyModel::orderBy('followers', 'DESC')->paginate(20);
-                return $this->success($companies, "Popular Companies...");
-            }
+
+            $companies = CompanyModel::orderBy('followers', 'DESC')->paginate(20);
+            return $this->success($companies, "Popular Companies...");
+
         } catch (ModelNotFoundException $th) {
             return $this->error(null, $th->getMessage(), 500);
         }
         
-        // if ($validator['type'] == "latest") 
-        // {
-        //     $companies = Company::orderBy('created_at', 'DESC')->paginate(20);
-        //     return $this->success($companies, "Latest Companies...");
-        // }
-        // else
-        // {
-        //     $companies = Company::orderBy('followers', 'DESC')->paginate(20);
-        //     return $this->success($companies, "Popular Companies...");
-        // }
     }
 
 
@@ -123,5 +124,40 @@ class CompanyController extends Controller
             return $this->error(null, $th->getMessage(), 500);
         }
     }
+
+    public function followCompany(Request $request)
+    {
+        $validator = $request->validate([
+            'customers_id' =>'exists:customers,id',
+            'companies_id' =>'exists:companies,id'
+        ]);
+        try {
+            DB::table('customers_companies')->insert($validator);
+            return $this->success(null, "Following !");
+        } catch (\Throwable $th) {
+            return $this->error(null, $th->getMessage(), 500);
+        }
+    }
+
+    public function unFollowCompany(Request $request)
+    {
+        $validator = $request->validate([
+            'customers_id' =>'exists:customers,id',
+            'companies_id' =>'exists:companies,id'
+        ]);
+        try {
+            DB::table('customers_companies')->where('customers_id', $validator['customers_id'])->where('companies_id', $validator['companies_id'])->delete();
+            return $this->success(null, "Removed from following !");
+        } catch (\Throwable $th) {
+            return $this->error(null, $th->getMessage(), 500);
+        }
+    }
+
+    public function addService(Request $request)
+    {
+
+    }
+
+
 
 }

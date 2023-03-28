@@ -107,7 +107,7 @@ class PostController extends Controller
         $validator = $request->validate([
             'title' => 'string|required|max:300',
             'content' => 'string|required|max:1000',
-            'tags' => 'nullable|array',
+            'tags' => 'nullable',
             'image' => 'file|max:5120|mimes:jpeg,jpg,png,gif|nullable',
             'city' => 'string|nullable'
         ]);

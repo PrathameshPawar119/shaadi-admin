@@ -7,6 +7,7 @@ use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Customer\PostController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\SkillController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\TaskController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -96,5 +97,9 @@ Route::group(["prefix" => "posts"], function (){
     Route::get("/popular", [PostController::class, "getPopularPosts"]);
     Route::get('/{customer:id}',[PostController::class, "getUserPosts"]);
 });
+
+Route::group(["prefix" => "tags"], function(){
+    Route::get('/', [TagController::class, "index"]);
+} );
 
 

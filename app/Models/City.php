@@ -25,4 +25,5 @@ class City extends Model
     {
         return $this->belongsToMany(Company::class, 'companies_cities', 'cities_id', 'companies_id');
     }
+
 }

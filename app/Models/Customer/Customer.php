@@ -36,7 +36,7 @@ class Customer extends Authenticate
         return $this->belongsToMany(Company::class, 'customers_companies', 'customers_id', 'companies_id');
     }
 
-    public function cities(){
+    public function city(){
         return $this->hasOne(City::class, 'customers_cities', 'customers_id', 'cities_id');
     }
 

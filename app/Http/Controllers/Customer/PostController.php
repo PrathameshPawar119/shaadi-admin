@@ -6,10 +6,13 @@ use App\Http\Controllers\Controller;
 use App\Models\City;
 use App\Models\Customer\Customer;
 use App\Models\Customer\Post;
+use App\Models\Tag;
 use App\Traits\HttpResponses;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
 class PostController extends Controller
@@ -100,7 +103,7 @@ class PostController extends Controller
     }
 
     public function createPost(Request $request){
-        $user = Auth::guard('customer')->id();
+        $user = Auth::guard('customer');
         $validator = $request->validate([
             'title' => 'string|required|max:300',
             'content' => 'string|required|max:1000',
@@ -108,15 +111,37 @@ class PostController extends Controller
             'image' => 'file|max:5120|mimes:jpeg,jpg,png,gif|nullable',
             'city' => 'string|nullable'
         ]);
-        $validator['creator'] =  $user;
-        
-        $validator['tags'] = implode(",", $validator['tags']);
+
+        $file = $request->file('image');
+        // $path = Storage::putFile('posts', $file);
+        // $public_path = storage_path('app');
+        // $opt_path = substr($path, 6);
+        if($file){
+            $destinationPath = 'posts/';
+            $imageName = date('YmdHis')."-".$file->getClientOriginalName();
+            $file->move($destinationPath, $imageName);
+            $validator['image'] = $destinationPath.$imageName;
+        }
+
+
+        $validator['creator'] =  $user->id();
+        if(is_null($validator['city']))
+        {
+            $validator['city'] = $user->city;
+        }
+        $validator['tags'] = explode(",", $validator['tags']);
+
         // $validator['comments'] = implode(", ", $validator['comments']);
         // dd($validator);
 
         try {
             $post = Post::create($validator);
             throw_if($post->count() == 0,'Post Generation failed');
+
+            foreach ($validator['tags'] as $key => $tag) {
+                $tags_id = Tag::where('name', $tag)->select('id')->first();
+                DB::table('tags_posts')->insert(['tags_id' => $tags_id, 'posts_id' => $post->id]);
+            }
 
             return $this->success($post, "Post Created Successfully !");
         } catch (\Throwable $th) {

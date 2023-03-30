@@ -14,7 +14,7 @@ Requirements -
 4. Open project in command panel
 5. put Following commands one by one -     
     1. `composer install` or `composer update`     
-    2.  for windows run - `copy .env.example .env` , others - make file copy all text from .env.example to .env (make new if not there)     
+    2.  for windows run - `copy .env.example .env` , others - copy all text from .env.example to .env (make new if not there)     
     3. run `php artisan shramik:install` -- this custom command will create all tables in database and create storage links with seeding database so just enter for every question.
 
 

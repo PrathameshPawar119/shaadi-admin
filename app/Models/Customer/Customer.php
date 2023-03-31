@@ -16,7 +16,7 @@ class Customer extends Authenticate
     use HasFactory, HasApiTokens, Notifiable;
 
     protected $fillable = [
-        'name', 'title', 'email', 'password', 'contact', 'email_verified_at', 'city'
+        'name', 'title', 'email', 'password', 'contact', 'email_verified_at', 'city', 'slug'
     ];
 
     protected $hidden = [
@@ -46,7 +46,7 @@ class Customer extends Authenticate
 
     public function experiences()
     {
-        return $this->hasMany(Experience::class, 'customers_experiences', 'customers_id', 'experiences_id');
+        return $this->hasMany(Experience::class);
     }
 
 }

@@ -54,6 +54,7 @@ Route::group(["middleware" => 'auth:customer'], function (){
     Route::group(["prefix" => "customer"], function(){
         Route::post('/skillaction', [CustomerController::class, "addSkill"]);
         Route::delete('/skillaction', [CustomerController::class, "removeSkill"]);
+        Route::post('/create-exp', [CustomerController::class, "createExperience"]);
     });
 
     Route::group(["prefix" => "company"], function () {
@@ -82,6 +83,7 @@ Route::group([], function(){
 Route::group(["prefix" => "customer"], function(){
     Route::get('/profile',[AuthController::class, "profile"]);
     Route::get('/getskills/{customer:id}', [CustomerController::class, "getSkills"]);
+    Route::get('/experiences/{customer:id}', [CustomerController::class, "getExperiences"]);
 });
 
 Route::group(["prefix" => "company"], function(){

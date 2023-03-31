@@ -13,17 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('customers_experiences', function (Blueprint $table) {
-            $table->foreignId('customers_id')
-                    ->constrained('customers')
-                    ->onDelete('cascade')
-                    ->onUpdate('cascade');
+        Schema::create('tags_experiences', function (Blueprint $table) {
             $table->foreignId('experiences_id')
                     ->constrained('experiences')
                     ->onDelete('cascade')
                     ->onUpdate('cascade');
+            $table->foreignId('tags_id')
+                    ->constrained('tags')
+                    ->onDelete('cascade')
+                    ->onUpdate('cascade');
             
-            $table->unique(['customers_id', 'experiences_id']);
+            $table->unique(['experiences_id', 'tags_id']);
         });
     }
 
@@ -34,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('customers_experiences');
+        Schema::dropIfExists('tags_experiences');
     }
 };

@@ -18,6 +18,8 @@ use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+
 
 class AuthController extends Controller
 {
@@ -66,19 +68,20 @@ class AuthController extends Controller
             'email' => 'required|email|unique:customers,email|max:100',
             'password' => 'required',
             'c_password' => 'required|same:password',
-            'contact' => 'nullable|numeric|min:10|max:15|unique:customers,contact'
+            'contact' => 'nullable|numeric|min_digits:10|max_digits:15|unique:customers,contact',
+            'city' => 'required'
         ]);
         // dd($validator);
         // $validator = $validator->safe()->only(['name', 'email', 'password', 'c_password', 'contact']);
 
         if($validator){
             $validator['password'] = Hash::make($validator['password']);
+            $validator['slug'] = Str::slug($validator['name']);
+
             $user = Customer::create($validator);
 
             Auth::guard('customer')->login($user);
             $req->session()->regenerate();
-            // $user->createToken("Api Token of ".$user->name)->plainTextToken;
-            // event(new UserCreated($user));
 
             return $this->success([
                 'user' =>$user,

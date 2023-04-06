@@ -11,7 +11,7 @@ class TagController extends Controller
     use HttpResponses;
     public function index()
     {
-        $tags = Tag::select('id', 'name')->get();
+        $tags = Tag::select('name')->get()->toArray();
 
         if (is_null($tags)) {
             return $this->error(null, "No tags yet", 400);

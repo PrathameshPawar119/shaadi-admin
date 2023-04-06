@@ -33,13 +33,13 @@ class CustomerController extends Controller
     {
         $validator = $request->validate([
             'customers_id' => 'required|exists:customers,id',
-            'skill_name' => 'required|exists:skills,name'
+            'skills_id' => 'required|exists:skills,id'
         ]);
 
-        $skill = Skill::where('name', $validator['skill_name'])->first();
+        $skill_pair = Skill::find($validator['skills_id']);
         try{
-            $skill = DB::table('customers_skills')->insert(['customers_id' => $validator['customers_id'], 'skills_id' => $skill->id]);
-            return $this->success($skill, "SKill added");
+            $skill = DB::table('customers_skills')->insert(['customers_id' => $validator['customers_id'], 'skills_id' => $validator['skills_id']]);
+            return $this->success($skill_pair, "SKill added");
         }
         catch(Throwable $th){
             return $this->error(null, $th->getMessage(), 500);

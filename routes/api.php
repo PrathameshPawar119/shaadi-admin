@@ -52,8 +52,8 @@ Route::post("/verifyotp", [OtpController::class, "verifyOtp"]);
 Route::group(["middleware" => 'auth:customer'], function (){
 
     Route::group(["prefix" => "customer"], function(){
-        Route::post('/skillaction', [CustomerController::class, "addSkill"]);
-        Route::delete('/skillaction', [CustomerController::class, "removeSkill"]);
+        Route::post('/skillaction', [SkillController::class, "addSkill"]);
+        Route::delete('/skillaction', [SkillController::class, "removeSkill"]);
         Route::post('/create-exp', [CustomerController::class, "createExperience"]);
     });
 
@@ -78,6 +78,7 @@ Route::group([], function(){
     // filter homepage posts by city and types
     Route::get("/{city:name}/city", [PostController::class, "postsByCityFilteres"]);
     Route::get("/skills", [SkillController::class, "index"]);
+    Route::get("/getcustomers", [CustomerController::class, "getUsers"]);
 });
 
 Route::group(["prefix" => "customer"], function(){

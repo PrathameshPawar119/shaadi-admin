@@ -29,39 +29,6 @@ class CustomerController extends Controller
         }
     }
 
-    public function addSkill(Request $request)
-    {
-        $validator = $request->validate([
-            'customers_id' => 'required|exists:customers,id',
-            'skills_id' => 'required|exists:skills,id'
-        ]);
-
-        $skill_pair = Skill::find($validator['skills_id']);
-        try{
-            $skill = DB::table('customers_skills')->insert(['customers_id' => $validator['customers_id'], 'skills_id' => $validator['skills_id']]);
-            return $this->success($skill_pair, "SKill added");
-        }
-        catch(Throwable $th){
-            return $this->error(null, $th->getMessage(), 500);
-        }
-    }
-
-    public function removeSkill(Request $request)
-    {
-        $validator = $request->validate([
-            'customers_id' => 'required|exists:customers,id',
-            'skills_id' => 'required|exists:skills,id'
-        ]);
-
-        try{
-            $skill = DB::table('customers_skills')->where('customers_id', $validator['customers_id'])->where('skills_id', $validator['skills_id'])->delete();
-            return $this->success($skill, "SKill Removed");
-        }
-        catch(Throwable $th){
-            return $this->error(null, $th->getMessage(), 500);
-        }
-    }
-
     public function getSkills(Customer $customer)
     {
         $user = Customer::find($customer->id);
@@ -132,6 +99,12 @@ class CustomerController extends Controller
             return $this->error(null, "No experiences added yet", 400);
         }
         return $this->success($experiences, "All experiences");
+    }
+
+    public function getUsers()
+    {
+        $users = Customer::select("id","name", "slug", "title")->paginate(20);
+        return $this->success($users, "All Users.. ");
     }
 
 }

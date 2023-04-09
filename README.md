@@ -2,8 +2,8 @@
 
 
 Requirements -     
-    1. Composer >v2 installed   
-    2. Xampp installed    
+    1. Xampp installed  
+    2. Composer >v2 installed   
     3. PHP version >8
     
 ## Steps - 

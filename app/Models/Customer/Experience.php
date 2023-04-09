@@ -10,8 +10,8 @@ class Experience extends Model
 {
     use HasFactory;
 
-    protected $hidden = [
-        'title', 'content', 'tags', 'image', 'content'
+    protected $fillable = [
+        'title', 'content', 'tags', 'image', 'customer_id', 'city', 'company'
     ];
 
     protected $casts = [
@@ -21,6 +21,6 @@ class Experience extends Model
 
     public function customer()
     {
-        return $this->HasOne(Customer::class, 'customers_experiences', 'experiences_id', 'customers_id');
+        return $this->belongsTo(Customer::class);
     }
 }

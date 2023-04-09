@@ -20,7 +20,7 @@ class PostFactory extends Factory
         return [
             "title" => fake()->sentence(),
             "content"=> fake()->paragraph(),
-            // "tags" => fake()->randomElements([""]),
+            "tags" => fake()->randomElements(["new", "done", "happy", "helpful", "nice", "glass", "polish", "project"], 2, false),
             "likes" => fake()->numberBetween(0, 100),
             "creator" => $creator = fake()->randomElement(Customer::all()->pluck('id')),
             "city" => Customer::find($creator)->city,

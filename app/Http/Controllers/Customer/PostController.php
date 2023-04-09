@@ -138,9 +138,11 @@ class PostController extends Controller
             $post = Post::create($validator);
             throw_if($post->count() == 0,'Post Generation failed');
 
-            foreach ($validator['tags'] as $key => $tag) {
-                $tags_id = Tag::where('name', $tag)->select('id')->first();
-                DB::table('tags_posts')->insert(['tags_id' => $tags_id, 'posts_id' => $post->id]);
+            if(is_null($validator['tags']) == false){
+                foreach ($validator['tags'] as $key => $tag) {
+                    $tags_id = Tag::where('name', $tag)->select('id')->first();
+                    DB::table('tags_posts')->insert(['tags_id' => $tags_id->id, 'posts_id' => $post->id]);
+                }
             }
 
             return $this->success($post, "Post Created Successfully !");

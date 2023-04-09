@@ -15,12 +15,14 @@ return new class extends Migration
     {
         Schema::create('experiences', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('customer_id');
             $table->string('title');
             $table->text('content');
             $table->json('tags')->nullable();
             $table->string('image')->nullable();
-            $table->string('location');
+            $table->string('city');
             $table->string('company')->nullable();
+            $table->foreign('customer_id')->references('id')->on('customers')->onDelete('cascade')->onUpdate('cascade');
             $table->timestamps();
         });
     }

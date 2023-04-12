@@ -9,7 +9,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class CompanyCreated extends Mailable
+class NewCompany extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -18,12 +18,9 @@ class CompanyCreated extends Mailable
      *
      * @return void
      */
-    public $company;
-    public $contractor;
-    public function __construct($company, $contractor)
+    public function __construct()
     {
-        $this->company = $company;
-        $this->contractor = $contractor;
+        //
     }
 
     /**
@@ -34,7 +31,7 @@ class CompanyCreated extends Mailable
     public function envelope()
     {
         return new Envelope(
-            subject: 'Company Created Successfully',
+            subject: 'New Company',
         );
     }
 
@@ -46,7 +43,7 @@ class CompanyCreated extends Mailable
     public function content()
     {
         return new Content(
-            markdown: 'emails.companycreated',
+            markdown: 'emails.new-company',
         );
     }
 

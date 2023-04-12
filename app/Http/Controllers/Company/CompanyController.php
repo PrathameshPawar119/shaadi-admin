@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Company;
 
 use App\Http\Controllers\Controller;
 use App\Mail\CompanyCreated;
+use App\Mail\NewCompany;
 use App\Models\Company\Company as CompanyModel;
 use App\Models\Contractor;
+use App\Models\Customer\Customer;
 use App\Traits\HttpResponses;
 use Faker\Provider\ar_EG\Company;
 use Illuminate\Http\Request;
@@ -13,6 +15,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -64,23 +67,30 @@ class CompanyController extends Controller
         $validator = $req->validate([
             'name' => 'bail|required|max:100|string',
             'title' => 'bail|required|max:300|string',
-            'about' => 'bail|min:100|nullable|string',
+            'about' => 'bail|min:10|nullable|string',
             'email' => 'bail|email|max:100|unique:companies,email',
-            'services' => 'array|required',
+            'services' => 'nullable',
             'website' => 'bail|url|nullable',
             'industry_type' => 'bail|string|required',
             'main_city' => 'bail|string|required',
-            'available_cities' => 'array|required',
+            'available_cities' => 'nullable',
             'company_size' => 'bail|string|required',
             'founded' => 'bail|date|required',
         ]);
 
-        $validator['services'] = implode(',', $validator['services']);
-        $validator['available_cities'] = implode(',', $validator['available_cities']);
+        // if(!is_null($validator['services'])){
+        //     $validator['services'] = implode(',', $validator['services']);
+        // }
+
+        // if (!is_null($validator['available_cities'])) {
+        //     $validator['available_cities'] = implode(',', $validator['available_cities']);
+        // }
+
         $validator['creator'] = Auth::guard('customer')->id();
+        $validator['slug'] = Str::slug($validator['name']);
 
         //create contractor for comapny
-        $creator = Auth::guard('customer');
+        $creator = Customer::find($validator['creator'])->toArray();
         $contractor = Contractor::create($creator);
         
         if($validator){
@@ -89,7 +99,7 @@ class CompanyController extends Controller
 
                 throw_if($company->count() == 0,'Post Generation failed');
 
-                Mail::to($company->email)->send(new CompanyCreated($company));
+                Mail::to($company->email)->send(new CompanyCreated($company, $contractor));
                 return $this->success($company, "Company Registered Successfully !");
 
             } catch (\Throwable $th) {

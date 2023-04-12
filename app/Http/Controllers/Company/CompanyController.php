@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Company;
 use App\Http\Controllers\Controller;
 use App\Mail\CompanyCreated;
 use App\Models\Company\Company as CompanyModel;
+use App\Models\Contractor;
 use App\Traits\HttpResponses;
 use Faker\Provider\ar_EG\Company;
 use Illuminate\Http\Request;
@@ -13,6 +14,8 @@ use Illuminate\Support\Facades\Mail;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
+
 
 class CompanyController extends Controller
 {
@@ -74,9 +77,12 @@ class CompanyController extends Controller
 
         $validator['services'] = implode(',', $validator['services']);
         $validator['available_cities'] = implode(',', $validator['available_cities']);
-
-        // dd($validator);
         $validator['creator'] = Auth::guard('customer')->id();
+
+        //create contractor for comapny
+        $creator = Auth::guard('customer');
+        $contractor = Contractor::create($creator);
+        
         if($validator){
             try {
                 $company = CompanyModel::create($validator);

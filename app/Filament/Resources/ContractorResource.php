@@ -2,40 +2,28 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TagResource\Pages;
-use App\Filament\Resources\TagResource\RelationManagers;
-use App\Models\Tag;
-use Closure;
+use App\Filament\Resources\ContractorResource\Pages;
+use App\Filament\Resources\ContractorResource\RelationManagers;
+use App\Models\Contractor;
 use Filament\Forms;
-use Filament\Forms\Components\Card;
-use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
 use Filament\Tables;
-use Filament\Tables\Columns\TextColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class TagResource extends Resource
+class ContractorResource extends Resource
 {
-    protected static ?string $model = Tag::class;
+    protected static ?string $model = Contractor::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-collection';
-    protected static ?string $navigationGroup = 'Categories';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Card::make([
-                    TextInput::make('name')
-                                ->required()
-                                ->maxLength(100),
-                    TextInput::make('description')
-                                ->required()
-                                ->maxLength(500)
-                ])
+                //
             ]);
     }
 
@@ -43,8 +31,7 @@ class TagResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->limit(20)->searchable(),
-                TextColumn::make('description')->limit(30),
+                //
             ])
             ->filters([
                 //
@@ -61,7 +48,7 @@ class TagResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageTags::route('/'),
+            'index' => Pages\ManageContractors::route('/'),
         ];
     }    
 }

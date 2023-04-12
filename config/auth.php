@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Contractor;
 use App\Models\Customer\Customer;
 use App\Models\User;
 
@@ -46,7 +47,12 @@ return [
         'customer' => [
             'driver' => 'session',
             'provider' => 'customers'
-        ]
+        ],
+        'contractor' => [
+            'driver' => 'session',
+            'provider' => 'contractors'
+        ],
+
     ],
 
     /*
@@ -74,7 +80,11 @@ return [
         'customers' => [
             'driver' => 'eloquent',
             'model' => Customer::class
-        ]
+        ],
+        'contractors' => [
+            'driver' => 'eloquent',
+            'model' => Contractor::class
+        ],
 
         // 'users' => [
         //     'driver' => 'database',
@@ -105,6 +115,12 @@ return [
             'throttle' => 60,
         ],
         'customers' => [
+            'provider' => 'users',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'contractors' => [
             'provider' => 'users',
             'table' => 'password_resets',
             'expire' => 60,

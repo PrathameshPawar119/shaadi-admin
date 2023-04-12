@@ -15,7 +15,7 @@ class Company extends Model
     use HasFactory, HasApiTokens, Notifiable;
                             
     protected $fillable = [
-        'creator', 'name', 'title', 'about', 'email', 'services', 'website', 'industry_type', 'location', 'company_size', 'main_city', 'available_cities', 'founded', 'reports'
+        'creator', 'name', 'slug', 'title', 'about', 'email', 'services', 'website', 'industry_type', 'location', 'company_size', 'main_city', 'available_cities', 'founded', 'reports'
     ];
 
     protected $casts = [

@@ -83,7 +83,7 @@ return [
         ],
         'contractors' => [
             'driver' => 'eloquent',
-            'model' => Contractor::class
+            'model' => Customer::class
         ],
 
         // 'users' => [

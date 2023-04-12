@@ -10,14 +10,15 @@ class Contractor extends Authenticable
 {
     use HasFactory;
     protected $fillable = [
-        "name", "email", "contact", "password", "email_verified_at"
+        'name', 'title', 'email', 'password', 'contact', 'email_verified_at', 'city', 'slug'
     ];
 
     protected $hidden = [
-        "password", "email_verified_at"
+        'password', 'email_verified_at'
     ];
 
-    protected $casts = [
-        "email_verified_at" => "datetime"
+    protected $casts =[
+        'email_verified_at' => 'datetime'
     ];
+
 }

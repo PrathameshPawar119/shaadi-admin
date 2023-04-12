@@ -58,7 +58,7 @@ Route::group(["middleware" => 'auth:customer'], function (){
     });
 
     Route::group(["prefix" => "company"], function () {
-        Route::post("createcompany", [CompanyController::class, "createCompany"]);
+        Route::post("/createcompany", [CompanyController::class, "createCompany"]);
         // edit company
         // create company/about
         // edit company/about

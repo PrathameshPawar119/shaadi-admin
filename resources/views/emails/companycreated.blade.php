@@ -1,10 +1,10 @@
 <x-mail::message>
-# Company Created Successfully 
+# Congratulations {{$contractor->name}}! Company Created Successfully.
 
-{{$company}}
+## {{$company->name}}
 
-<x-mail::button :url="''">
-Button Text
+<x-mail::button :url="config('app.url').'/contractor/login'">
+Company Admin Panel
 </x-mail::button>
 
 Thanks,<br>

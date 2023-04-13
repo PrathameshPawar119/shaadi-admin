@@ -9,7 +9,7 @@ Requirements -
 ## Steps - 
 
 1. Start Apache and MySQL from your Xampp Control panel      
-2. open PHPMyadmin and create database named - 'shaadi-admin'     
+2. open PHPMyadmin and create database named - 'shaadi_admin'     
 3. Clone this project in Xampp/htdocs folder
 4. Open project in command panel
 5. put Following commands one by one -     

@@ -5,6 +5,7 @@ namespace App\Models\Company;
 use App\Models\City;
 use App\Models\Customer\Customer;
 use App\Models\Customer\Post;
+use App\Models\JobModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
@@ -76,6 +77,11 @@ class Company extends Model
     public function cities()
     {
         return $this->belongsToMany(City::class, 'companies_cities', 'companies_id', 'cities_id');
+    }
+
+    public function jobModels()
+    {
+        return $this->hasMany(JobModel::class);
     }
 
 }

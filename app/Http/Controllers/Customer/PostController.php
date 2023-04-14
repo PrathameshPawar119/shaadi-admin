@@ -113,9 +113,6 @@ class PostController extends Controller
         ]);
 
         $file = $request->file('image');
-        // $path = Storage::putFile('posts', $file);
-        // $public_path = storage_path('app');
-        // $opt_path = substr($path, 6);
         if($file){
             $destinationPath = 'posts/';
             $imageName = date('YmdHis')."-".$file->getClientOriginalName();

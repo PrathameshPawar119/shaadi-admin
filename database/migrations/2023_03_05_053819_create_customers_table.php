@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('password')->nullable();
             $table->string('city');
             $table->rememberToken();
-            $table->string('referrer')->nullable();
+            $table->boolean('hasCompany')->default(false);
             $table->timestamps();
         });
     }

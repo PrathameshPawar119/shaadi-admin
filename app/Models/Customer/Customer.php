@@ -32,7 +32,12 @@ class Customer extends Authenticate
         return $this->hasMany(Post::class);
     }
 
-    public function company(){
+    public function company()
+    {
+        return $this->hasOne(Company::class, 'creator');
+    }
+
+    public function companies(){
         return $this->belongsToMany(Company::class, 'customers_companies', 'customers_id', 'companies_id');
     }
 

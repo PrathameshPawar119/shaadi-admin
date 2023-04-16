@@ -85,6 +85,7 @@ class CompanyController extends Controller
         // if (!is_null($validator['available_cities'])) {
         //     $validator['available_cities'] = implode(',', $validator['available_cities']);
         // }
+        
 
         $validator['creator'] = Auth::guard('customer')->id();
         $validator['slug'] = Str::slug($validator['name']);
@@ -92,6 +93,10 @@ class CompanyController extends Controller
         //create contractor for comapny
         $creator = Customer::find($validator['creator'])->toArray();
         $contractor = Contractor::create($creator);
+            
+        $customer = Customer::find(Auth::guard('customer')->id());
+        $customer->hasCompany = 1;
+        $customer->save();
         
         if($validator){
             try {

@@ -84,6 +84,11 @@ class Company extends Model
         return $this->hasMany(JobModel::class);
     }
 
+    public function creator()
+    {
+        return $this->belongsTo(Customer::class, 'creator');
+    }
+
 }
 
 

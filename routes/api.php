@@ -3,6 +3,7 @@
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Controllers\Auth\OtpController;
 use App\Http\Controllers\Company\CompanyController;
+use App\Http\Controllers\Company\JobsController;
 use App\Http\Controllers\Customer\CustomerController;
 use App\Http\Controllers\Customer\PostController;
 use App\Http\Controllers\LocationController;
@@ -79,6 +80,10 @@ Route::group([], function(){
     Route::get("/{city:name}/city", [PostController::class, "postsByCityFilteres"]);
     Route::get("/skills", [SkillController::class, "index"]);
     Route::get("/getcustomers", [CustomerController::class, "getUsers"]);
+});
+
+Route::group(["prefix" => "jobs"], function(){
+    Route::get('/', [JobsController::class, "getAll"]);
 });
 
 Route::group(["prefix" => "customer"], function(){

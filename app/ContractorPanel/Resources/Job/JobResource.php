@@ -40,7 +40,7 @@ class JobResource extends Resource
                             ->columnSpanFull(),
                 MarkdownEditor::make('description')
                             ->required()
-                            ->maxLength(100)
+                            ->minLength(10)
                             ->columnSpanFull(),
                 Select::make('location')
                             ->options(City::all()->pluck('name', 'name'))

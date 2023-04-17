@@ -13,7 +13,7 @@ class JobsController extends Controller
 
     public function getAll()
     {
-        $jobs = JobModel::all();
+        $jobs = JobModel::paginate(20);
         
         if(is_null($jobs)){
             return $this->success(null, "No jobs to display");

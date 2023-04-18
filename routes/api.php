@@ -84,6 +84,7 @@ Route::group([], function(){
 
 Route::group(["prefix" => "jobs"], function(){
     Route::get('/', [JobsController::class, "getAll"]);
+    Route::get('/{job:id}', [JobsController::class, "getJobById"]);
 });
 
 Route::group(["prefix" => "customer"], function(){
@@ -99,15 +100,16 @@ Route::group(["prefix" => "company"], function(){
     Route::post('/getfollowers', [CompanyController::class, "getFollowers"]);
 });
 
-Route::group(["prefix" => "posts"], function (){
-    Route::get("/", [PostController::class, "getPopularPosts"]);
-    Route::get('/new', [PostController::class, "getNewPosts"]);
-    Route::get("/popular", [PostController::class, "getPopularPosts"]);
+Route::group(["prefix" => ""], function (){
+    Route::get("/", [PostController::class, "index"]);
+    Route::get('filters/latest', [PostController::class, "getNewPosts"]);
+    Route::get("filters/popular", [PostController::class, "getPopularPosts"]);
     Route::get('/{customer:id}',[PostController::class, "getUserPosts"]);
+    Route::get('filters/skills', [PostController::class, "getPostsBySkills"]);
 });
 
 Route::group(["prefix" => "tags"], function(){
-    Route::get('/', [TagController::class, "index"]);
+    Route::get('/getall', [TagController::class, "index"]);
 } );
 
 

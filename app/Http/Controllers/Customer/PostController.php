@@ -14,10 +14,39 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
+use Spatie\QueryBuilder\QueryBuilder;
 
 class PostController extends Controller
 {
     use HttpResponses, HasApiTokens;
+
+    public function index(Request $request)
+    {
+        if($request->type == 'latest')
+        {
+            try {
+                $posts = Post::orderBy('created_at', 'DESC')->paginate(20);
+                return $this->success($posts, "Latest Posts...");
+            } catch (\Throwable $th) {
+                return $this->error(null, $th->getMessage(), 500);
+            }        }
+        else if($request->type == 'popular')
+        {
+            try {
+                $posts = Post::join('customers', 'customers.id', 'posts.creator')
+                ->select('posts.*', 'customers.id', 'customers.name', 'customers.title')->orderBy('likes', 'DESC')->paginate(20);
+                return $this->success($posts, "Popular Posts...");
+            } catch (\Throwable $th) {
+                return $this->error(null, $th->getMessage(), 500);
+            }        }
+        else{
+            try {
+                $posts = Post::orderBy('created_at', 'DESC')->paginate(20);
+                return $this->success($posts, "Latest Posts...");
+            } catch (\Throwable $th) {
+                return $this->error(null, $th->getMessage(), 500);
+            }        }
+    }
 
     public function getNewPosts():JsonResponse
     {
@@ -59,11 +88,6 @@ class PostController extends Controller
             return $this->success($posts, "Popular Posts...");
         }
 
-        // $new_posts = Post::orderBy('created_at', 'DESC')->where('city', $city->name)->paginate(20)->toArray();
-        // $popular_posts = Post::orderBy('likes', 'DESC')->where('city', $city->name)->paginate(20)->toArray();
-        // $posts = $new_posts + $popular_posts;
-        // $posts = shuffle($posts);
-        // return $this->success($posts, "Popular and latest posts shuffled for ".$city);
 
         return $this->error(null, "Validation Error", 500);
     }
@@ -147,5 +171,15 @@ class PostController extends Controller
             return $this->error(null, $th->getMessage(), 500);
         }
 
+    }
+
+    public function getPostsBySkills(Request $request)
+    {
+        $skills = $request->skills;
+        $posts = Customer::whereHas('skills', function ($query) use ($skills) {
+            $query->whereIn('name', $skills);
+        })->post()->get();
+        
+        return $this->success($posts, "Posts by skills");
     }
 }

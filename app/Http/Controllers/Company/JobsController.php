@@ -20,4 +20,15 @@ class JobsController extends Controller
         }
         return $this->success($jobs, "All jobs fetched");
     }
+
+    public function getJobById(JobModel $job)
+    {
+        $job = JobModel::find($job->id);
+
+        if(is_null($job))
+        {
+            return $this->error(null, "Invalid Job Id", 404);
+        }
+        return $this->success($job, "Job fetched");
+    }
 }
